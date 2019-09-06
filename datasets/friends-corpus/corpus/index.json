@@ -1,0 +1,1 @@
+{"utterances-index": {"season": "<class 'str'>", "episode": "<class 'str'>", "scene": "<class 'str'>", "tokens": "<class 'list'>", "transcript_with_note": "<class 'NoneType'>", "tokens_with_note": "<class 'NoneType'>", "character_entities": "<class 'list'>"}, "users-index": {}, "conversations-index": {}, "overall-index": {}, "version": 0}
