@@ -429,8 +429,7 @@ class Corpus:
                 top_level_comment = ut.get("meta")["top_level_comment"]
                 if top_level_comment is None: continue # i.e. this is a post (root) utterance
                 threads[top_level_comment].append(ut)
-        return {root: {utt.id: utt for utt in list(sorted(l,
-                                                          key=lambda x: x.timestamp))[-suffix_len:prefix_len]}
+        return {root: {utt.id: utt for utt in list(sorted(l, key=lambda x: x.timestamp))[-suffix_len:prefix_len]}
                 for root, l in threads.items()}
 
     def get_meta(self) -> Dict:
