@@ -8,6 +8,10 @@ class Reciprocity(Transformer):
     def __init__(self):
         pass
 
+    @staticmethod
+    def _calculate_something(arg):
+        return [x for x in arg]
+
     def transform(self, corpus: Corpus):
         for convo in corpus.iter_conversations():
             reciprocal = 0
