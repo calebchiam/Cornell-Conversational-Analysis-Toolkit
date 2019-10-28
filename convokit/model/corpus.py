@@ -9,11 +9,9 @@ from .utterance import Utterance
 from .conversation import Conversation
 
 def warning(text: str):
-    """
-    Pre-pends a red-colored 'WARNING: ' to [text].
-    :param text: Warning message
-    :return: 'WARNING: [text]'
-    """
+    # Pre-pends a red-colored 'WARNING: ' to [text].
+    # :param text: Warning message
+    # :return: 'WARNING: [text]'
     return '\033[91m'+ "WARNING: " + '\033[0m' + text
 
 pair_delim = '-q-a-'
@@ -143,11 +141,13 @@ class Corpus:
                     if field_type == "bin" and field not in exclude_utterance_meta:
                         with open(os.path.join(filename, field + "-convo-bin.p"), "rb") as f:
                             l_bin = pickle.load(f)
-                        for k, v in convos_meta.items():
-                            if k == field and type(v) == str and str(v).startswith(BIN_DELIM_L) and \
-                                    str(v).endswith(BIN_DELIM_R):
-                                idx = int(v[len(BIN_DELIM_L):-len(BIN_DELIM_R)])
-                                convos_meta[k] = l_bin[idx]
+                            
+                        for convo_id, convo_meta in convos_meta.items():
+                            for k, v in convo_meta.items():
+                                if k == field and type(v) == str and str(v).startswith(BIN_DELIM_L) and \
+                                        str(v).endswith(BIN_DELIM_R):
+                                    idx = int(v[len(BIN_DELIM_L):-len(BIN_DELIM_R)])
+                                    convo_meta[k] = l_bin[idx]
 
                 for field in exclude_conversation_meta:
                     del self.meta_index["conversations-index"][field]
@@ -747,6 +747,7 @@ class Corpus:
     def print_summary_stats(self) -> None:
         """
         Helper function for printing the number of Users, Utterances, and Conversations in this Corpus
+
         :return: None
         """
         print("Number of Users: {}".format(len(self.all_users)))
