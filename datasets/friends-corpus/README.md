@@ -17,7 +17,7 @@ Please make pull requests if you wish to fix errors in our datasets.
 
 Our dataset is based on the popular TV show called [*Friends*](https://en.wikipedia.org/wiki/Friends).
 Transcripts for all 10 seasons of the show as well as manual and crowdsourced annotation for subparts of the show are provided.
-All text data are available in the [JSON files](json); please visit the individual task pages to retrieve datasets specifically designed for those tasks.
+All text data are available in the [JSON files](raw_dataset); please visit the individual task pages to retrieve datasets specifically designed for those tasks.
 
 ## Statistics
 
