@@ -12,8 +12,7 @@ class EmoTracker(Transformer):
     """
     def __init__(self):
         self.ATTR_NAME = "emotion_tranformer"
-        self.categories=["negative_emotion", "shame", "violence", "rage", "pain", "anger", "disgust", "hate", 
-                "love", "politics"]
+        self.categories=["sadness", "violence", "rage", "pain", "anger", "love", "politics"]
 
     def transform(self, corpus: Corpus):
         """Adds metadata about politicization to each utterance.
@@ -24,13 +23,15 @@ class EmoTracker(Transformer):
         assert 'stem_tokens' in next(corpus.iter_utterances()).meta
         counter = 1
         for utt in corpus.iter_utterances():
-            if utt.meta['valid'] and counter < 500:
-
+            if utt.meta['valid']:
                 utt.meta['analysis'] = lexicon.analyze(utt.text,categories=self.categories)
+                for k in utt.meta['analysis'].keys():
+                    if utt.meta['analysis'][k] != 0.0:
+                        utt.meta['analysis'][k] = 1
             else:
                 utt.meta['analysis'] = None
 
             counter = counter + 1
-            if counter % 500 == 0:
+            if counter % 10000 == 0:
                 print("processed ", counter, "utterances ")
         return corpus
