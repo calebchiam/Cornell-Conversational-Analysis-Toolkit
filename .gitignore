@@ -33,3 +33,4 @@ venv-triadmotif/
 kenLM/
 srilm-1.7.3.tar
 convokit/SRILM/srilm-1.7.3/*
+*checkpoint.ipynb
