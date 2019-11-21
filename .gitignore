@@ -30,3 +30,6 @@ venv/
 *.iml
 venv-triadmotif/
 *.DS_Store
+kenLM/
+srilm-1.7.3.tar
+convokit/SRILM/srilm-1.7.3/*
