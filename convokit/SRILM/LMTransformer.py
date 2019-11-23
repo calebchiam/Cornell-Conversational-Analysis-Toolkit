@@ -3,8 +3,8 @@ from convokit import Transformer, Corpus
 
 
 class LMTransformer(Transformer):
-    def __init__(self, model: LanguageModel, model_name: str, utt_selector: lambda utt: True,
-                 utt_text_func = lambda utt: utt.text):
+    def __init__(self, model: LanguageModel, model_name: str, utt_selector=lambda utt: True,
+                 utt_text_func=lambda utt: utt.text):
         self.model = model
         self.model_name = model_name
         self.utt_selector = utt_selector
