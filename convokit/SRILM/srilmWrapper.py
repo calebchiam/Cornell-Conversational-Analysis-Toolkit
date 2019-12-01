@@ -72,14 +72,17 @@ class LanguageModel:
         return ppl
 
     def file_perplexity1(self, target_text_file):
-        cmd = LanguageModel.commands()['perplexity'].format(SRILM_path=self.SRILM_path,
-                                                            lm_filepath=self.lm_filepath,
-                                                            target_text=target_text_file)
-        result = subprocess.getoutput(cmd)
-        if self.verbose: print(result)
-        ppl = float(result.split("ppl1= ")[1].split()[0])
-        return ppl
-
+        try:
+            cmd = LanguageModel.commands()['perplexity'].format(SRILM_path=self.SRILM_path,
+                                                                lm_filepath=self.lm_filepath,
+                                                                target_text=target_text_file)
+            result = subprocess.getoutput(cmd)
+            if self.verbose: print(result)
+            ppl = float(result.split("ppl1= ")[1].split()[0])
+            return ppl
+        except ValueError:
+            return None
+        
     def str_perplexity1(self, str_: str):
         temp_folder = os.path.join(self.dir, 'temp')
         os.makedirs(temp_folder, exist_ok=True)
