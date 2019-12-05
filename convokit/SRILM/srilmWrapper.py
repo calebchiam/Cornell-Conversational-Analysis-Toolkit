@@ -26,7 +26,7 @@ class LanguageModel:
     def commands():
         return {'ngram-count': "{SRILM_path}/ngram-count -text {corpus_text} -lm {lm_output} "
                                "-order {order} -write {count_output}",
-                'laplace': "{SRILM_path}/ngram-count -text {corpus_text} -order {order} -addsmooth {smooth} -write {count_output}"
+                'laplace': "{SRILM_path}/ngram-count -text {corpus_text} -order {order} -unk -addsmooth {smooth} -write {count_output}"
                            " -lm {lm_output}",
                 # https://linguistics.stackexchange.com/questions/11957/different-discounting-methods-with-srilm-toolikt
                 'kneser-ney': "{SRILM_path}/ngram-count -kndiscount -interpolate -order {order} -write {count_output} -lm {lm_output}",
