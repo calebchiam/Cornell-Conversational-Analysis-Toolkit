@@ -1,0 +1,83 @@
+---
+title: "12hr Whole Forum Entropy TS"
+output: html_document
+---
+
+Basically the Neutral LM. 
+
+```{r, echo=FALSE}
+liberalDF <- read.csv("~/Desktop/CS6742/subreddits_proantigun/12hr/liberal_forum_wholeforum_entropy.csv", comment.char="#", stringsAsFactors=FALSE)
+liberalDF <- liberalDF[-which(liberalDF$utterid == "cxk55dp"), ]
+conservativeDF <- read.csv("~/Desktop/CS6742/subreddits_proantigun/12hr/conservative_forum_wholeforum_entropy.csv", comment.char="#", stringsAsFactors=FALSE)
+neutralDF <- read.csv("~/Desktop/CS6742/subreddits_proantigun/12hr/neutral_forum_wholeforum_entropy.csv", comment.char="#", stringsAsFactors=FALSE)
+
+
+#############
+liberalAgg <- aggregate(liberalDF[, c("entropy")], by=list(liberalDF$event, liberalDF$time_bin), function(x){mean(x, na.rm=TRUE)})
+colnames(liberalAgg) <- c('event', 'time_bin', 'entropy')
+
+conservativeAgg <- aggregate(conservativeDF[, c("entropy")], by=list(conservativeDF$event, conservativeDF$time_bin), function(x){mean(x, na.rm=TRUE)})
+colnames(conservativeAgg) <- c('event', 'time_bin', 'entropy')
+
+neutralAgg <- aggregate(neutralDF[, c("entropy")], by=list(neutralDF$event, neutralDF$time_bin), function(x){mean(x, na.rm=TRUE)})
+colnames(neutralAgg) <- c('event', 'time_bin', 'entropy')
+
+events = c('Aurora theater shooting', 'Sandy Hook Elementary School shooting', 'San Bernardino attack',
+       'Orlando nightclub shooting', 'Las Vegas shooting',
+       'Sutherland Springs church shooting',
+       'Stoneman Douglas High School shooting',
+       'Santa Fe High School shooting')
+
+liberalDF <- liberalDF[which(liberalDF$event %in% events), ]
+conservativeDF <- conservativeDF[which(conservativeDF$event %in% events), ]
+neutralDF <- neutralDF[which(neutralDF$event %in% events), ]
+```
+
+
+#Side by Side Bar Plots
+```{r}
+liberal = as.list(1:8)
+
+conservative = as.list(1:8)
+
+neutral = as.list(1:8)
+
+remove_outliers <- function(x, na.rm = TRUE, ...) {
+  qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)
+  H <- 3* IQR(x, na.rm = na.rm)
+  y <- x
+  y[x < (qnt[1] - H)] <- NA
+  y[x > (qnt[2] + H)] <- NA
+  return(y)
+}
+
+for (i in 1:8){
+subsetDF <- liberalDF[which(liberalDF$event == events[i]), ]
+subsetDF2 <- conservativeDF[which(conservativeDF$event == events[i]), ]
+subsetDF3 <- neutralDF[which(neutralDF$event == events[i]), ]
+
+#subsetDF <- liberalAgg[which(liberalAgg$event == events[i]), ]
+#subsetDF2 <- conservativeAgg[which(conservativeAgg$event == events[i]), ]
+#subsetDF3 <- neutralAgg[which(neutralAgg$event == events[i]), ]
+
+liberal[[i]] <- remove_outliers(subsetDF$entropy)
+conservative[[i]] <- remove_outliers(subsetDF2$entropy)
+neutral[[i]] <- remove_outliers(subsetDF3$entropy)
+
+}
+
+names(liberal) <- names(conservative) <- names(neutral) <- events
+
+par(mfrow=c(1,1))
+par(mar= c(8, 4, 4, 2) + 0.1)
+
+
+boxplot(liberal, main="Liberal - Entropy", las=2, cex.axis=0.7, ylab="Forum Entropy", col = "steelblue")
+
+
+boxplot(conservative, main="Conservative - Entropy", las=2, cex.axis=0.7, ylab="Forum Entropy", col = 'firebrick4')
+
+
+boxplot(neutral, main="Neutral - Entropy", las=2, cex.axis=0.7, ylab="Forum Entropy", col='seagreen')
+```
+
